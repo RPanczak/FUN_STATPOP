@@ -15,4 +15,7 @@ Clustering small values to ensure data protection:
 
 > For reasons of data protection, certain restrictions apply to variables from the population and household survey with regard to forwarding raw data and cartographic representations based on a measurement in hectares. To ensure data protection, absolute values from 1 to 3 are shown in standard tables as a group or cluster with the value of "3". Where their use can be justified, data that have not been grouped together in this way can be used for statistical, research and planning purposes after conclusion of a data protection agreement.
 
-(CC BY-NC-SA 4.0)
+[![CC BY-NC-SA 4.0][cc-by-nc-sa-image]][cc-by-nc-sa]
+
+[cc-by-nc-sa]: http://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-by-nc-sa-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
