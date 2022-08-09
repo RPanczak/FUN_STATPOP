@@ -2,7 +2,7 @@
 
 Exploring STATPOP data from FSO
 
-- [2012-2012 datasets](https://www.bfs.admin.ch/bfs/en/home/services/geostat/swiss-federal-statistics-geodata/population-buildings-dwellings-persons/population-housholds-from-2010.html)
+- [2012-2020 datasets](https://www.bfs.admin.ch/bfs/en/home/services/geostat/swiss-federal-statistics-geodata/population-buildings-dwellings-persons/population-housholds-from-2010.html)
 
 - [1970, 1980, 1990, 2000 datasets](https://www.bfs.admin.ch/bfs/en/home/services/geostat/swiss-federal-statistics-geodata/population-buildings-dwellings-persons/population-buildings-censuses-1970-1980-1990-2000.html)
 
