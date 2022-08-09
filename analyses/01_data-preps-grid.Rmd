@@ -48,8 +48,6 @@ knitr::opts_chunk$set(cache = FALSE,
                       warning = FALSE)
 
 knitr::opts_knit$set(width = 75)
-
-mu <- Hmisc::markupSpecs$html
 ```
 
 <!-- ----------------------------------------------------- -->
@@ -57,16 +55,18 @@ mu <- Hmisc::markupSpecs$html
 # Geo 
 
 ```{r}
-gg21 <- read_rds("data/BfS/gg21.Rds")
+gg21 <- read_rds("data/BfS/gg21.Rds") %>% 
+  st_transform(2056)
 
-st_gg21 <- read_rds("data/swisstopo/st_gg21.Rds")
+st_gg21 <- read_rds("data/swisstopo/st_gg21.Rds") %>% 
+  st_transform(2056)
 ```
 
 <!-- ----------------------------------------------------- -->
 
 # STATPOP
 
-Could be used to define `offset` for `st_make_grid`
+Used to define `offset` for `st_make_grid`
 
 ```{r}
 statpop_2020 <- read_delim("data-raw/ag-b-00.03-vz2020statpop/STATPOP2020.csv", 
@@ -83,6 +83,8 @@ offset <- statpop_2020 %>%
             maxY = max(N_KOORD))
 
 # statpop_20 %>% slice(1:10) %>% View()
+
+offset
 ```
 
 
@@ -95,13 +97,11 @@ statpop_2020_pts <- statpop_2020 %>%
            remove = TRUE)
 ```
 
-
 ```{r}
-test <- statpop_2020_pts %>% 
+statpop_2020_pts %>% 
   arrange(RELI) %>% 
-  slice(1:1000)
-
-qtm(test)
+  slice(1:100) %>% 
+  qtm()
 ```
 
 
@@ -109,20 +109,48 @@ qtm(test)
 
 # STATPOP conversions 
 
-## Grid
+## Grid (vector)
 
 100m grid, with lower left corner defined using `STATPOP` cells and clippet using swisstopo municipality data. 
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 grid_100m <- st_gg21 %>% 
-  st_make_grid(cellsize = 100, square = TRUE, 
-               offset = c(offset$minX, offset$minY)) %>% 
-  st_intersection(st_gg21)  %>%
+  st_make_grid(cellsize = 100, 
+               offset = c(offset$minX, offset$minY), 
+               square = TRUE) %>% 
   st_sf() %>%
-  st_cast("POLYGON") %>% 
+  st_filter(st_gg21)  %>%
   mutate(ID = row_number(),
          area = st_area(.)) %>% 
-  relocate(ID, area)
+  relocate(ID, area) %>% 
+  st_transform(2056)
+```
+
+```{r}
+grid_100m %>% 
+  arrange(ID) %>% 
+  slice(1:100) %>% 
+  qtm()
+```
+
+```{r}
+# still with NAs!
+grid_100m_data <- grid_100m %>% 
+  st_join(statpop_2020_pts) 
+```
+
+```{r}
+grid_100m_data %>% 
+  filter(!is.na(RELI)) %>% 
+  arrange(RELI) %>% 
+  slice(1:100) %>% 
+  qtm()
+
+grid_100m_data %>% 
+  filter(!is.na(RELI)) %>% 
+  arrange(ID) %>% 
+  slice(1:100) %>% 
+  qtm()
 ```
 
 ## Raster
